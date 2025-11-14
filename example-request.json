@@ -1,0 +1,3269 @@
+{
+  "input": {
+    "workflow": {
+      "1": {
+        "inputs": {
+          "filename": "umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+        },
+        "class_type": "CLIPLoader",
+        "_meta": {
+          "title": "CLIPLoader"
+        }
+      },
+      "2": {
+        "inputs": {
+          "filename": "wan_2.1_vae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "VAELoader"
+        }
+      },
+      "3": {
+        "inputs": {
+          "filename": "Wan2.2-I2V-A14B-HighNoise-Q4_K_M.gguf"
+        },
+        "class_type": "UnetLoaderGGUF",
+        "_meta": {
+          "title": "UnetLoaderGGUF"
+        }
+      },
+      "4": {
+        "inputs": {
+          "filename": "Wan2.2-I2V-A14B-LowNoise-Q3_K_S.gguf"
+        },
+        "class_type": "UnetLoaderGGUF",
+        "_meta": {
+          "title": "UnetLoaderGGUF"
+        }
+      },
+      "5": {
+        "inputs": {
+          "value": 8,
+          "model": [
+            "3",
+            0
+          ]
+        },
+        "class_type": "ModelSamplingSD3",
+        "_meta": {
+          "title": "ModelSamplingSD3"
+        }
+      },
+      "6": {
+        "inputs": {
+          "value": 8,
+          "model": [
+            "4",
+            0
+          ]
+        },
+        "class_type": "ModelSamplingSD3",
+        "_meta": {
+          "title": "ModelSamplingSD3"
+        }
+      },
+      "7": {
+        "inputs": {
+          "filename": "Wan21_I2V_14B_lightx2v_cfg_step_distill_lora_rank64_fixed.safetensors",
+          "model": [
+            "5",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoraLoaderModelOnly"
+        }
+      },
+      "8": {
+        "inputs": {
+          "filename": "Wan21_I2V_14B_lightx2v_cfg_step_distill_lora_rank64_fixed.safetensors",
+          "model": [
+            "6",
+            0
+          ]
+        },
+        "class_type": "LoraLoaderModelOnly",
+        "_meta": {
+          "title": "LoraLoaderModelOnly"
+        }
+      },
+      "9": {
+        "inputs": {
+          "image": "topictracks_banner_6.png"
+        },
+        "class_type": "LoadImage",
+        "_meta": {
+          "title": "LoadImage"
+        }
+      },
+      "10": {
+        "inputs": {
+          "filename": "CLIP-ViT-H-fp16.safetensors"
+        },
+        "class_type": "CLIPVisionLoader",
+        "_meta": {
+          "title": "CLIPVisionLoader"
+        }
+      },
+      "11": {
+        "inputs": {
+          "text": "center",
+          "clip_vision": [
+            "10",
+            0
+          ],
+          "image": [
+            "9",
+            0
+          ]
+        },
+        "class_type": "CLIPVisionEncode",
+        "_meta": {
+          "title": "CLIPVisionEncode"
+        }
+      },
+      "13": {
+        "inputs": {
+          "text": "",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 1 - Positive"
+        }
+      },
+      "14": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 1 - Negative"
+        }
+      },
+      "15": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "13",
+            0
+          ],
+          "negative": [
+            "14",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "9",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "16": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "15",
+            0
+          ],
+          "negative": [
+            "15",
+            1
+          ],
+          "latent_image": [
+            "15",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "17": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "15",
+            0
+          ],
+          "negative": [
+            "15",
+            1
+          ],
+          "latent_image": [
+            "16",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "18": {
+        "inputs": {
+          "samples": [
+            "17",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "19": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "18",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "20": {
+        "inputs": {
+          "text": "video_segment_1",
+          "video": [
+            "19",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "21": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "18",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "22": {
+        "inputs": {
+          "filename_prefix": "video1_last_frame",
+          "images": [
+            "21",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "23": {
+        "inputs": {
+          "text": "",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 2 - Positive"
+        }
+      },
+      "24": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 2 - Negative"
+        }
+      },
+      "25": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "23",
+            0
+          ],
+          "negative": [
+            "24",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "21",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "26": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "25",
+            0
+          ],
+          "negative": [
+            "25",
+            1
+          ],
+          "latent_image": [
+            "25",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "27": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "25",
+            0
+          ],
+          "negative": [
+            "25",
+            1
+          ],
+          "latent_image": [
+            "26",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "28": {
+        "inputs": {
+          "samples": [
+            "27",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "29": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "28",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "30": {
+        "inputs": {
+          "text": "video_segment_2",
+          "video": [
+            "29",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "31": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "28",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "32": {
+        "inputs": {
+          "filename_prefix": "video2_last_frame",
+          "images": [
+            "31",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "33": {
+        "inputs": {
+          "text": "",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 3 - Positive"
+        }
+      },
+      "34": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 3 - Negative"
+        }
+      },
+      "35": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "33",
+            0
+          ],
+          "negative": [
+            "34",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "31",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "36": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "35",
+            0
+          ],
+          "negative": [
+            "35",
+            1
+          ],
+          "latent_image": [
+            "35",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "37": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "35",
+            0
+          ],
+          "negative": [
+            "35",
+            1
+          ],
+          "latent_image": [
+            "36",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "38": {
+        "inputs": {
+          "samples": [
+            "37",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "39": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "38",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "40": {
+        "inputs": {
+          "text": "video_segment_3",
+          "video": [
+            "39",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "41": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "38",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "42": {
+        "inputs": {
+          "filename_prefix": "video3_last_frame",
+          "images": [
+            "41",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "43": {
+        "inputs": {
+          "text": "",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 4 - Positive"
+        }
+      },
+      "44": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 4 - Negative"
+        }
+      },
+      "45": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "43",
+            0
+          ],
+          "negative": [
+            "44",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "41",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "46": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "45",
+            0
+          ],
+          "negative": [
+            "45",
+            1
+          ],
+          "latent_image": [
+            "45",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "47": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "45",
+            0
+          ],
+          "negative": [
+            "45",
+            1
+          ],
+          "latent_image": [
+            "46",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "48": {
+        "inputs": {
+          "samples": [
+            "47",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "49": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "48",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "50": {
+        "inputs": {
+          "text": "video_segment_4",
+          "video": [
+            "49",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "51": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "48",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "52": {
+        "inputs": {
+          "filename_prefix": "video4_last_frame",
+          "images": [
+            "51",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "53": {
+        "inputs": {
+          "text": "",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 5 - Positive"
+        }
+      },
+      "54": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 5 - Negative"
+        }
+      },
+      "55": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "53",
+            0
+          ],
+          "negative": [
+            "54",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "51",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "56": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "55",
+            0
+          ],
+          "negative": [
+            "55",
+            1
+          ],
+          "latent_image": [
+            "55",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "57": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "55",
+            0
+          ],
+          "negative": [
+            "55",
+            1
+          ],
+          "latent_image": [
+            "56",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "58": {
+        "inputs": {
+          "samples": [
+            "57",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "59": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "58",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "60": {
+        "inputs": {
+          "text": "video_segment_5",
+          "video": [
+            "59",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "61": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "58",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "62": {
+        "inputs": {
+          "filename_prefix": "video5_last_frame",
+          "images": [
+            "61",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "63": {
+        "inputs": {
+          "text": "",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 6 - Positive"
+        }
+      },
+      "64": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 6 - Negative"
+        }
+      },
+      "65": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "63",
+            0
+          ],
+          "negative": [
+            "64",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "61",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "66": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "65",
+            0
+          ],
+          "negative": [
+            "65",
+            1
+          ],
+          "latent_image": [
+            "65",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "67": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "65",
+            0
+          ],
+          "negative": [
+            "65",
+            1
+          ],
+          "latent_image": [
+            "66",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "68": {
+        "inputs": {
+          "samples": [
+            "67",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "69": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "68",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "70": {
+        "inputs": {
+          "text": "video_segment_6",
+          "video": [
+            "69",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "71": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "68",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "72": {
+        "inputs": {
+          "filename_prefix": "video6_last_frame",
+          "images": [
+            "71",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "73": {
+        "inputs": {
+          "text": "Video sequence 7: [Enter your prompt here]",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 7 - Positive"
+        }
+      },
+      "74": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 7 - Negative"
+        }
+      },
+      "75": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "73",
+            0
+          ],
+          "negative": [
+            "74",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "71",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "76": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "75",
+            0
+          ],
+          "negative": [
+            "75",
+            1
+          ],
+          "latent_image": [
+            "75",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "77": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "75",
+            0
+          ],
+          "negative": [
+            "75",
+            1
+          ],
+          "latent_image": [
+            "76",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "78": {
+        "inputs": {
+          "samples": [
+            "77",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "79": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "78",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "80": {
+        "inputs": {
+          "text": "video_segment_7",
+          "video": [
+            "79",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "81": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "78",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "82": {
+        "inputs": {
+          "filename_prefix": "video7_last_frame",
+          "images": [
+            "81",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "83": {
+        "inputs": {
+          "text": "Video sequence 8: [Enter your prompt here]",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 8 - Positive"
+        }
+      },
+      "84": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 8 - Negative"
+        }
+      },
+      "85": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "83",
+            0
+          ],
+          "negative": [
+            "84",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "81",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "86": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "85",
+            0
+          ],
+          "negative": [
+            "85",
+            1
+          ],
+          "latent_image": [
+            "85",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "87": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "85",
+            0
+          ],
+          "negative": [
+            "85",
+            1
+          ],
+          "latent_image": [
+            "86",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "88": {
+        "inputs": {
+          "samples": [
+            "87",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "89": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "88",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "90": {
+        "inputs": {
+          "text": "video_segment_8",
+          "video": [
+            "89",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "91": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "88",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "92": {
+        "inputs": {
+          "filename_prefix": "video8_last_frame",
+          "images": [
+            "91",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "93": {
+        "inputs": {
+          "text": "Video sequence 9: [Enter your prompt here]",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 9 - Positive"
+        }
+      },
+      "94": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 9 - Negative"
+        }
+      },
+      "95": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "93",
+            0
+          ],
+          "negative": [
+            "94",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "91",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "96": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "95",
+            0
+          ],
+          "negative": [
+            "95",
+            1
+          ],
+          "latent_image": [
+            "95",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "97": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "95",
+            0
+          ],
+          "negative": [
+            "95",
+            1
+          ],
+          "latent_image": [
+            "96",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "98": {
+        "inputs": {
+          "samples": [
+            "97",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "99": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "98",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "100": {
+        "inputs": {
+          "text": "video_segment_9",
+          "video": [
+            "99",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "101": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "98",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "102": {
+        "inputs": {
+          "filename_prefix": "video9_last_frame",
+          "images": [
+            "101",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "103": {
+        "inputs": {
+          "text": "Video sequence 10: [Enter your prompt here]",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 10 - Positive"
+        }
+      },
+      "104": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 10 - Negative"
+        }
+      },
+      "105": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "103",
+            0
+          ],
+          "negative": [
+            "104",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "101",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "106": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "105",
+            0
+          ],
+          "negative": [
+            "105",
+            1
+          ],
+          "latent_image": [
+            "105",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "107": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "105",
+            0
+          ],
+          "negative": [
+            "105",
+            1
+          ],
+          "latent_image": [
+            "106",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "108": {
+        "inputs": {
+          "samples": [
+            "107",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "109": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "108",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "110": {
+        "inputs": {
+          "text": "video_segment_10",
+          "video": [
+            "109",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "111": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "108",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "112": {
+        "inputs": {
+          "filename_prefix": "video10_last_frame",
+          "images": [
+            "111",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "113": {
+        "inputs": {
+          "text": "Video sequence 11: [Enter your prompt here]",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 11 - Positive"
+        }
+      },
+      "114": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 11 - Negative"
+        }
+      },
+      "115": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "113",
+            0
+          ],
+          "negative": [
+            "114",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "111",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "116": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "115",
+            0
+          ],
+          "negative": [
+            "115",
+            1
+          ],
+          "latent_image": [
+            "115",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "117": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "115",
+            0
+          ],
+          "negative": [
+            "115",
+            1
+          ],
+          "latent_image": [
+            "116",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "118": {
+        "inputs": {
+          "samples": [
+            "117",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "119": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "118",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "120": {
+        "inputs": {
+          "text": "video_segment_11",
+          "video": [
+            "119",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "121": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "118",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "122": {
+        "inputs": {
+          "filename_prefix": "video11_last_frame",
+          "images": [
+            "121",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "123": {
+        "inputs": {
+          "text": "Video sequence 12: [Enter your prompt here]",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 12 - Positive"
+        }
+      },
+      "124": {
+        "inputs": {
+          "text": "static, blurry, low quality, worst quality",
+          "clip": [
+            "1",
+            0
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "Prompt 12 - Negative"
+        }
+      },
+      "125": {
+        "inputs": {
+          "value": 848,
+          "positive": [
+            "123",
+            0
+          ],
+          "negative": [
+            "124",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ],
+          "clip_vision_output": [
+            "11",
+            0
+          ],
+          "start_image": [
+            "121",
+            0
+          ],
+          "width": [
+            "180",
+            0
+          ],
+          "height": [
+            "181",
+            0
+          ]
+        },
+        "class_type": "WanImageToVideo",
+        "_meta": {
+          "title": "WanImageToVideo"
+        }
+      },
+      "126": {
+        "inputs": {
+          "text": "enable",
+          "model": [
+            "7",
+            0
+          ],
+          "positive": [
+            "125",
+            0
+          ],
+          "negative": [
+            "125",
+            1
+          ],
+          "latent_image": [
+            "125",
+            2
+          ],
+          "steps": [
+            "193",
+            0
+          ],
+          "start_at_step": [
+            "195",
+            0
+          ],
+          "end_at_step": [
+            "197",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "127": {
+        "inputs": {
+          "text": "disable",
+          "model": [
+            "8",
+            0
+          ],
+          "positive": [
+            "125",
+            0
+          ],
+          "negative": [
+            "125",
+            1
+          ],
+          "latent_image": [
+            "126",
+            0
+          ],
+          "steps": [
+            "201",
+            0
+          ],
+          "start_at_step": [
+            "202",
+            0
+          ],
+          "end_at_step": [
+            "203",
+            0
+          ]
+        },
+        "class_type": "KSamplerAdvanced",
+        "_meta": {
+          "title": "KSamplerAdvanced"
+        }
+      },
+      "128": {
+        "inputs": {
+          "samples": [
+            "127",
+            0
+          ],
+          "vae": [
+            "2",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "129": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "128",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "130": {
+        "inputs": {
+          "text": "video_segment_12",
+          "video": [
+            "129",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "131": {
+        "inputs": {
+          "value": 75,
+          "image": [
+            "128",
+            0
+          ]
+        },
+        "class_type": "ImageFromBatch",
+        "_meta": {
+          "title": "ImageFromBatch"
+        }
+      },
+      "132": {
+        "inputs": {
+          "filename_prefix": "video12_last_frame",
+          "images": [
+            "131",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "134": {
+        "inputs": {
+          "image1": [
+            "18",
+            0
+          ],
+          "image2": [
+            "28",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "135": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "134",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "136": {
+        "inputs": {
+          "text": "combined_1_to_2",
+          "video": [
+            "135",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "140": {
+        "inputs": {
+          "image1": [
+            "166",
+            0
+          ],
+          "image2": [
+            "48",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "141": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "140",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "142": {
+        "inputs": {
+          "text": "combined_1_to_4",
+          "video": [
+            "141",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "143": {
+        "inputs": {
+          "image1": [
+            "140",
+            0
+          ],
+          "image2": [
+            "58",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "144": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "143",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "145": {
+        "inputs": {
+          "text": "combined_1_to_5",
+          "video": [
+            "144",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "146": {
+        "inputs": {
+          "image1": [
+            "143",
+            0
+          ],
+          "image2": [
+            "68",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "147": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "146",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "148": {
+        "inputs": {
+          "text": "combined_1_to_6",
+          "video": [
+            "147",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "149": {
+        "inputs": {
+          "image1": [
+            "146",
+            0
+          ],
+          "image2": [
+            "78",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "150": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "149",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "151": {
+        "inputs": {
+          "text": "combined_1_to_7",
+          "video": [
+            "150",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "152": {
+        "inputs": {
+          "image1": [
+            "149",
+            0
+          ],
+          "image2": [
+            "88",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "153": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "152",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "154": {
+        "inputs": {
+          "text": "combined_1_to_8",
+          "video": [
+            "153",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "155": {
+        "inputs": {
+          "image1": [
+            "152",
+            0
+          ],
+          "image2": [
+            "98",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "156": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "155",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "157": {
+        "inputs": {
+          "text": "combined_1_to_9",
+          "video": [
+            "156",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "158": {
+        "inputs": {
+          "image1": [
+            "155",
+            0
+          ],
+          "image2": [
+            "108",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "159": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "158",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "160": {
+        "inputs": {
+          "text": "combined_1_to_10",
+          "video": [
+            "159",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "161": {
+        "inputs": {
+          "image1": [
+            "158",
+            0
+          ],
+          "image2": [
+            "118",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "162": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "161",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "163": {
+        "inputs": {
+          "text": "combined_1_to_11",
+          "video": [
+            "162",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "165": {
+        "inputs": {
+          "text": "combined_1_to_3",
+          "video": [
+            "167",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "166": {
+        "inputs": {
+          "image1": [
+            "134",
+            0
+          ],
+          "image2": [
+            "38",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "167": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "166",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "180": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "181": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "182": {
+        "inputs": {
+          "value": 212
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INTConstant"
+        }
+      },
+      "183": {
+        "inputs": {
+          "value": 120
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INTConstant"
+        }
+      },
+      "184": {
+        "inputs": {
+          "value": 1
+        },
+        "class_type": "LatentMultiply",
+        "_meta": {
+          "title": "LatentMultiply"
+        }
+      },
+      "185": {
+        "inputs": {
+          "value": 1
+        },
+        "class_type": "LatentMultiply",
+        "_meta": {
+          "title": "LatentMultiply"
+        }
+      },
+      "187": {
+        "inputs": {
+          "value": 480
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INTConstant"
+        }
+      },
+      "188": {
+        "inputs": {
+          "value": 848
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "INTConstant"
+        }
+      },
+      "189": {
+        "inputs": {
+          "text": "combined_1_to_12",
+          "video": [
+            "190",
+            0
+          ]
+        },
+        "class_type": "SaveVideo",
+        "_meta": {
+          "title": "SaveVideo"
+        }
+      },
+      "190": {
+        "inputs": {
+          "value": 16,
+          "images": [
+            "191",
+            0
+          ]
+        },
+        "class_type": "CreateVideo",
+        "_meta": {
+          "title": "CreateVideo"
+        }
+      },
+      "191": {
+        "inputs": {
+          "image1": [
+            "161",
+            0
+          ],
+          "image2": [
+            "128",
+            0
+          ]
+        },
+        "class_type": "ImageBatch",
+        "_meta": {
+          "title": "ImageBatch"
+        }
+      },
+      "192": {
+        "inputs": {
+          "value": 6
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "Steps"
+        }
+      },
+      "193": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "194": {
+        "inputs": {
+          "value": 0
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "Start at Step"
+        }
+      },
+      "195": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "196": {
+        "inputs": {
+          "value": 3
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "End at Step"
+        }
+      },
+      "197": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "198": {
+        "inputs": {
+          "value": 6
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "End at Step"
+        }
+      },
+      "199": {
+        "inputs": {
+          "value": 3
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "Start at Step"
+        }
+      },
+      "200": {
+        "inputs": {
+          "value": 6
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "Steps"
+        }
+      },
+      "201": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "202": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "203": {
+        "inputs": {},
+        "class_type": "Reroute",
+        "_meta": {
+          "title": "Reroute"
+        }
+      },
+      "204": {
+        "inputs": {
+          "value": 2
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "Steps"
+        }
+      },
+      "205": {
+        "inputs": {
+          "value": 1
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "Start at Step"
+        }
+      },
+      "206": {
+        "inputs": {
+          "value": 2
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "End at Step"
+        }
+      },
+      "207": {
+        "inputs": {
+          "value": 1
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "End at Step"
+        }
+      },
+      "208": {
+        "inputs": {
+          "value": 0
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "Start at Step"
+        }
+      },
+      "209": {
+        "inputs": {
+          "value": 2
+        },
+        "class_type": "INTConstant",
+        "_meta": {
+          "title": "Steps"
+        }
+      }
+    }
+  }
+}
